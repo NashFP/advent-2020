@@ -6,21 +6,17 @@
 
 (defun day1a ()
   (let ((numbers (mapcar #'parse-integer (read-file "day1a.txt"))))
-    (car (loop
-	    for x in numbers
-	    nconc (loop for y in numbers
-		     if (= 2020 (+ x y))
-		       collect (* x y))))))
+    (loop named outer
+       for x in numbers
+       do (loop for y in numbers
+	     when (= 2020 (+ x y))
+	     do (return-from outer (* x y))))))
 
 (defun day1b ()
   (let ((numbers (mapcar #'parse-integer (read-file "day1a.txt"))))
-    (car (loop
-	    for x in numbers
-	    nconc (loop for y in numbers
-		       nconc (loop for z in numbers
-				if (= 2020 (+ x y z))
-				collect (* x y z)))))))
-    
-
-  
-
+    (loop named outer
+       for x in numbers
+       do (loop for y in numbers
+	     do (loop for z in numbers
+		   when (= 2020 (+ x y z))
+		   do (return-from outer (* x y z)))))))
