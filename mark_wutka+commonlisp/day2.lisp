@@ -1,4 +1,5 @@
-(ql:quickload "cl-ppcre")
+;;;You need ppcre loaded
+;;;(ql:quickload "cl-ppcre")
 
 (defun read-file (filename)
   (with-open-file (stream filename)
@@ -33,8 +34,8 @@
 
 (defun day2a ()
   (let ((pwds (read-file "day2.txt")))
-    (length (remove-if-not (lambda (line) (is-valid-password-a line)) pwds))))
+    (length (remove-if-not #'is-valid-password-a pwds))))
 
 (defun day2b ()
   (let ((pwds (read-file "day2.txt")))
-    (length (remove-if-not (lambda (line) (is-valid-password-b line)) pwds))))
+    (length (remove-if-not #'is-valid-password-b pwds))))
