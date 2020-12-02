@@ -3,16 +3,33 @@ defmodule Advent.Day2 do
   def part_1(passwords) do
     passwords
     |> parse()
-    |> Enum.count(&validate?/1)
+    |> Enum.count(&validate_1?/1)
   end
 
-  defp validate?(%{min: min, max: max, char: char, password: password}) do
+  def part_2(passwords) do
+    passwords
+    |> parse()
+    |> Enum.count(&validate_2?/1)
+  end
+
+  defp validate_1?(%{min: min, max: max, char: char, password: password}) do
     count =
       password
       |> String.codepoints()
       |> Enum.count(&(&1 == char))
 
     count in min..max
+  end
+
+  defp validate_2?(%{min: min, max: max, char: char, password: password}) do
+    codepoints = String.codepoints(password)
+
+    case {Enum.at(codepoints, min - 1), Enum.at(codepoints, max - 1)} do
+      {^char, ^char} -> false
+      {^char, _} -> true
+      {_, ^char} -> true
+      {_, _} -> false
+    end
   end
 
   defp parse(input) do
