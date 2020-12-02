@@ -1,0 +1,28 @@
+name:                hstk-haskell
+version:             0.1.0.0
+#synopsis:
+#description:
+homepage:            https://github.com/hstk/hstk-haskell#readme
+license:             BSD3
+author:              Hank Stocker
+maintainer:          example@example.com
+copyright:           2020 Hank Stocker
+category:            Web
+extra-source-files:
+- README.md
+
+dependencies:
+  - attoparsec
+  - base >= 4.7 && < 5
+  - bytestring
+  - containers
+  - errors
+  - mtl
+  - text
+  - transformers
+  - unordered-containers
+
+executables:
+  hstk-haskell:
+    source-dirs:      src
+    main:             Main.hs

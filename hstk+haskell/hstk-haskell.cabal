@@ -1,0 +1,39 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 294fa833afd4244c27a708bef7b6fef76edebf671810d4271da87d3c55258239
+
+name:           hstk-haskell
+version:        0.1.0.0
+category:       Web
+homepage:       https://github.com/hstk/hstk-haskell#readme
+author:         Hank Stocker
+maintainer:     example@example.com
+copyright:      2020 Hank Stocker
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+executable hstk-haskell
+  main-is: Main.hs
+  other-modules:
+      Common
+      Paths_hstk_haskell
+  hs-source-dirs:
+      src
+  build-depends:
+      attoparsec
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , errors
+    , mtl
+    , text
+    , transformers
+    , unordered-containers
+  default-language: Haskell2010
