@@ -33,6 +33,12 @@
 
 ;;; When you provide multiple lists mapcar it calls the function with multiple values
 ;;; The first list in mapcar is the number of steps down, the second list is the steps down
+;;;
+;;; The #'* in the apply is just the multiply function. Common Lisp has 2 namespaces, one for
+;;; and one for functions. The #' is how you signal to Lisp that you mean something from the
+;;; function namespace instead of the data namespace.
+;;; Common Lisp is referred to as a Lisp-2 because of the two namespaces, while Scheme is a Lisp-1
+;;;
 (defun day3b ()
   (let ((treemap (read-file "day3.txt")))
     (apply #'*
