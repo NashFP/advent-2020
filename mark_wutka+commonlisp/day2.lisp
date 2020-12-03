@@ -1,14 +1,7 @@
 ;;;You need ppcre installed
 ;;;(ql:quickload "cl-ppcre")
 
-(require "asdf")
-(require "cl-ppcre")
-
-(defun read-file (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil)
-       while line
-       collect line)))
+(load "mwlib.lisp")
 
 ;;; Parse line with regex, parse low and high as integers, return 1st char of ch since
 ;;; the regex parser returns it as a string and we want it as a character

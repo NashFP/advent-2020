@@ -1,8 +1,4 @@
-(defun read-file (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil)
-       while line
-       collect line)))
+(load "mwlib.lisp")
 
 (defun day1a ()
   (let ((numbers (mapcar #'parse-integer (read-file "day1a.txt"))))
