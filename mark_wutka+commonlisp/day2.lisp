@@ -1,5 +1,8 @@
-;;;You need ppcre loaded
+;;;You need ppcre installed
 ;;;(ql:quickload "cl-ppcre")
+
+(require "asdf")
+(require "cl-ppcre")
 
 (defun read-file (filename)
   (with-open-file (stream filename)
