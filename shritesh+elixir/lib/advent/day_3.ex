@@ -11,15 +11,8 @@ defmodule Advent.Day3 do
       map =
         for {line, row} <- Enum.with_index(lines),
             {char, col} <- Enum.with_index(String.codepoints(line)),
-            into: %{} do
-          content =
-            case char do
-              "." -> :open
-              "#" -> :tree
-            end
-
-          {{row, col}, content}
-        end
+            do: {{row, col}, char},
+            into: %{}
 
       %__MODULE__{
         rows: Enum.count(lines),
@@ -39,13 +32,10 @@ defmodule Advent.Day3 do
 
     def count_trees_at_slope(%__MODULE__{} = tm, {right, down}) do
       rows = :lists.seq(0, tm.rows - 1, down)
+      cols = Stream.iterate(0, &(&1 + right))
 
-      {_col, encounters} =
-        Enum.reduce(rows, {0, []}, fn row, {col, encounters} ->
-          {col + right, [at(tm, row, col) | encounters]}
-        end)
-
-      Enum.count(encounters, &(&1 == :tree))
+      Enum.zip(rows, cols)
+      |> Enum.count(fn {row, col} -> at(tm, row, col) == "#" end)
     end
   end
 
