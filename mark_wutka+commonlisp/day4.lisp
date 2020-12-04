@@ -33,9 +33,7 @@
 
 ;;; Returns true if the id has a field
 (defun has-field (id field)
-  (cond ((null id) nil)
-	((equal (caar id) field) t)
-	(t (has-field (cdr id) field))))
+ (assoc field id :test #'equal))
 
 ;;; Checks whether an id is valid for the A part of day 4
 (defun is-valid-id-a (id)
@@ -85,24 +83,28 @@
 ;;; No validation needed for country id
 (defun validate-country-id (value) t)
 
-;;; Check the validity of each field
+(defvar validators (list
+		    (cons "byr" #'validate-birth-year)
+		    (cons "iyr" #'validate-issue-year)
+		    (cons "eyr" #'validate-expiration-year)
+		    (cons "hgt" #'validate-height)
+		    (cons "hcl" #'validate-hair-color)
+		    (cons "ecl" #'validate-eye-color)
+		    (cons "pid" #'validate-passport-id)
+		    (cons "cid" #'validate-country-id)))
+
+;;; Look up the validator for the field in the validators list and run it
 (defun is-field-value-valid (field)
-  (let ((field-type (car field)))
-    (cond ((equal field-type "byr") (validate-birth-year (cadr field)))
-	  ((equal field-type "iyr") (validate-issue-year (cadr field)))
-	  ((equal field-type "eyr") (validate-expiration-year (cadr field)))
-	  ((equal field-type "hgt") (validate-height (cadr field)))
-	  ((equal field-type "hcl") (validate-hair-color (cadr field)))
-	  ((equal field-type "ecl") (validate-eye-color (cadr field)))
-	  ((equal field-type "pid") (validate-passport-id (cadr field)))
-	  ((equal field-type "cid") (validate-country-id (cadr field)))
-	  )))
+  (let ((validator (assoc (car field) validators :test #'equal)))
+    (cond ((null validator) nil)
+	  ((apply (cdr validator) (list (cadr field)))))))
+
 
 ;;; For each field in the id, make sure it is valid
 (defun is-id-field-valid (id field)
-  (cond ((null id) nil)
-	((equal (caar id) field) (is-field-value-valid (car id)))
-	(t (is-id-field-valid (cdr id) field))))
+  (let ((field-in-id (assoc field id :test #'equal)))
+    (cond ((null field-in-id) nil)
+	  (t (is-field-value-valid field-in-id)))))
 
 ;;; For the B part of Day 4, make sure that the id has each required field and that the
 ;;; value for that field is valid
