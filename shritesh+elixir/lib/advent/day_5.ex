@@ -1,14 +1,9 @@
 defmodule Advent.Day5 do
   def seat_number(pass) do
-    [row, column] =
-      pass
-      |> String.replace(["F", "L"], "0")
-      |> String.replace(["B", "R"], "1")
-      |> String.split_at(-3)
-      |> Tuple.to_list()
-      |> Enum.map(&String.to_integer(&1, 2))
-
-    row * 8 + column
+    pass
+    |> String.replace(["F", "L"], "0")
+    |> String.replace(["B", "R"], "1")
+    |> String.to_integer(2)
   end
 
   def part_1(input) do
