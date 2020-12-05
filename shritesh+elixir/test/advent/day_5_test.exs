@@ -3,16 +3,15 @@ defmodule Advent.Day5Test do
   alias Advent.Day5
 
   @passes %{
-    "FBFBBFFRLR" => {44, 5, 357},
-    "BFFFBBFRRR" => {70, 7, 567},
-    "FFFBBBFRRR" => {14, 7, 119},
-    "BBFFBBFRLL" => {102, 4, 820}
+    "FBFBBFFRLR" => 357,
+    "BFFFBBFRRR" => 567,
+    "FFFBBBFRRR" => 119,
+    "BBFFBBFRLL" => 820
   }
 
-  test "parse_seat" do
-    @passes
-    |> Enum.each(fn {pass, result} ->
-      assert Day5.parse_seat(pass) == result
+  test "seat_number" do
+    Enum.each(@passes, fn {pass, result} ->
+      assert Day5.seat_number(pass) == result
     end)
   end
 
