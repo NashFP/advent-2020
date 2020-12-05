@@ -24,7 +24,20 @@ defmodule Advent.Day5 do
     input
     |> String.split("\n", trim: true)
     |> Enum.map(&parse_seat/1)
-    |> Enum.map(fn {_row, _col, total} -> total end)
+    |> Enum.map(fn {_row, _col, seat_number} -> seat_number end)
     |> Enum.max()
+  end
+
+  def part_2(input) do
+    seat_set =
+      input
+      |> String.split("\n", trim: true)
+      |> Enum.map(&parse_seat/1)
+      |> Enum.map(fn {_row, _col, seat_number} -> seat_number end)
+      |> MapSet.new()
+
+    {min, max} = Enum.min_max(seat_set)
+
+    Enum.filter(min..max, &(not MapSet.member?(seat_set, &1)))
   end
 end
