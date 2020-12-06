@@ -7,20 +7,18 @@ defmodule Advent.Day5 do
   end
 
   def part_1(input) do
-    input
-    |> String.split("\n", trim: true)
+    String.split(input, "\n", trim: true)
     |> Enum.map(&seat_number/1)
     |> Enum.max()
   end
 
   def part_2(input) do
     seat_set =
-      input
-      |> String.split("\n", trim: true)
+      String.split(input, "\n", trim: true)
       |> Enum.map(&seat_number/1)
       |> MapSet.new()
 
     {min, max} = Enum.min_max(seat_set)
-    Enum.filter(min..max, &(not MapSet.member?(seat_set, &1)))
+    Enum.find(min..max, &(not MapSet.member?(seat_set, &1)))
   end
 end

@@ -1,21 +1,18 @@
 defmodule Advent.Day2 do
   @input_regex ~r/(?<min>\d+)-(?<max>\d+) (?<char>\S): (?<password>.+)/
   def part_1(passwords) do
-    passwords
-    |> parse()
+    parse(passwords)
     |> Enum.count(&validate_1?/1)
   end
 
   def part_2(passwords) do
-    passwords
-    |> parse()
+    parse(passwords)
     |> Enum.count(&validate_2?/1)
   end
 
   defp validate_1?(%{min: min, max: max, char: char, password: password}) do
     count =
-      password
-      |> String.codepoints()
+      String.codepoints(password)
       |> Enum.count(&(&1 == char))
 
     count in min..max
@@ -33,14 +30,11 @@ defmodule Advent.Day2 do
   end
 
   defp parse(input) do
-    input
-    |> String.trim()
-    |> String.split("\n")
-    |> Enum.map(fn line ->
+    for line <- String.split(input, "\n", trim: true) do
       %{"min" => min, "max" => max, "char" => char, "password" => password} =
         Regex.named_captures(@input_regex, line)
 
       %{min: String.to_integer(min), max: String.to_integer(max), char: char, password: password}
-    end)
+    end
   end
 end
