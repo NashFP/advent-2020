@@ -3,10 +3,7 @@ defmodule Advent.Day3 do
     defstruct [:rows, :columns, :map]
 
     def new(input) do
-      lines =
-        input
-        |> String.trim()
-        |> String.split("\n")
+      lines = String.split(input, "\n", trim: true)
 
       map =
         for {line, row} <- Enum.with_index(lines),
@@ -21,13 +18,13 @@ defmodule Advent.Day3 do
       }
     end
 
-    def at(%__MODULE__{rows: rows, columns: columns, map: map}, row, col)
+    def at(%__MODULE__{rows: rows, columns: columns, map: map}, {row, col})
         when row in 0..(rows - 1) and col in 0..(columns - 1) do
       Map.get(map, {row, col})
     end
 
-    def at(%__MODULE__{rows: rows, columns: columns} = tm, row, col) do
-      at(tm, rem(row, rows), rem(col, columns))
+    def at(%__MODULE__{rows: rows, columns: columns} = tm, {row, col}) do
+      at(tm, {rem(row, rows), rem(col, columns)})
     end
 
     def count_trees_at_slope(%__MODULE__{} = tm, {right, down}) do
@@ -35,7 +32,7 @@ defmodule Advent.Day3 do
       cols = Stream.iterate(0, &(&1 + right))
 
       Enum.zip(rows, cols)
-      |> Enum.count(fn {row, col} -> at(tm, row, col) == "#" end)
+      |> Enum.count(&(at(tm, &1) == "#"))
     end
   end
 

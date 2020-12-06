@@ -2,10 +2,7 @@ defmodule Advent.Day4 do
   defp passport_fields(passport_lines) do
     passport_lines
     |> String.split(["\n", " "], trim: true)
-    |> Enum.into(%{}, fn str ->
-      [field, value] = String.split(str, ":")
-      {field, value}
-    end)
+    |> Enum.into(%{}, &List.to_tuple(String.split(&1, ":")))
   end
 
   defp valid_passport_1?(fields) do
@@ -15,8 +12,7 @@ defmodule Advent.Day4 do
   end
 
   def part_1(input) do
-    input
-    |> String.split("\n\n")
+    String.split(input, "\n\n")
     |> Enum.map(&passport_fields/1)
     |> Enum.count(&valid_passport_1?/1)
   end
@@ -43,8 +39,7 @@ defmodule Advent.Day4 do
   end
 
   def part_2(input) do
-    input
-    |> String.split("\n\n")
+    String.split(input, "\n\n")
     |> Enum.map(&passport_fields/1)
     |> Enum.count(&valid_passport_2?/1)
   end
