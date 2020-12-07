@@ -8,8 +8,8 @@ defmodule Advent.Day3 do
       map =
         for {line, row} <- Enum.with_index(lines),
             {char, col} <- Enum.with_index(String.codepoints(line)),
-            do: {{row, col}, char},
-            into: %{}
+            into: %{},
+            do: {{row, col}, char}
 
       %__MODULE__{
         rows: Enum.count(lines),
