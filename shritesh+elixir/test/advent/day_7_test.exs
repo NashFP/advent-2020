@@ -2,7 +2,7 @@ defmodule Advent.Day7Test do
   use ExUnit.Case
   alias Advent.Day7
 
-  @example """
+  @example_1 """
   light red bags contain 1 bright white bag, 2 muted yellow bags.
   dark orange bags contain 3 bright white bags, 4 muted yellow bags.
   bright white bags contain 1 shiny gold bag.
@@ -12,6 +12,16 @@ defmodule Advent.Day7Test do
   vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
   faded blue bags contain no other bags.
   dotted black bags contain no other bags.
+  """
+
+  @example_2 """
+  shiny gold bags contain 2 dark red bags.
+  dark red bags contain 2 dark orange bags.
+  dark orange bags contain 2 dark yellow bags.
+  dark yellow bags contain 2 dark green bags.
+  dark green bags contain 2 dark blue bags.
+  dark blue bags contain 2 dark violet bags.
+  dark violet bags contain no other bags.
   """
 
   test "parse_rules" do
@@ -27,10 +37,15 @@ defmodule Advent.Day7Test do
       "dotted black" => %{}
     }
 
-    assert Day7.parse_rules(@example) == expectation
+    assert Day7.parse_rules(@example_1) == expectation
   end
 
   test "part_1" do
-    assert Day7.part_1(@example) == 4
+    assert Day7.part_1(@example_1) == 4
+  end
+
+  test "part_2" do
+    assert Day7.part_2(@example_1) == 32
+    assert Day7.part_2(@example_2) == 126
   end
 end

@@ -17,10 +17,10 @@ defmodule Advent.Day7 do
     end
   end
 
-  defp does_hold(rules, container_color, bag_color) do
+  defp holds?(rules, container_color, bag_color) do
     holding_colors = Map.keys(rules[container_color])
 
-    bag_color in holding_colors || Enum.any?(holding_colors, &does_hold(rules, &1, bag_color))
+    bag_color in holding_colors || Enum.any?(holding_colors, &holds?(rules, &1, bag_color))
   end
 
   def part_1(input, bag_color \\ "shiny gold") do
@@ -28,6 +28,17 @@ defmodule Advent.Day7 do
 
     Map.keys(rules)
     |> Enum.filter(&(&1 != bag_color))
-    |> Enum.count(&does_hold(rules, &1, bag_color))
+    |> Enum.count(&holds?(rules, &1, bag_color))
+  end
+
+  defp count_bags(rules, color) do
+    rules[color]
+    |> Enum.map(fn {bag_color, count} -> count + count * count_bags(rules, bag_color) end)
+    |> Enum.sum()
+  end
+
+  def part_2(input, bag_color \\ "shiny gold") do
+    parse_rules(input)
+    |> count_bags(bag_color)
   end
 end
