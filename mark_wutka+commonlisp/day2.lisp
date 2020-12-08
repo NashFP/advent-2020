@@ -1,5 +1,5 @@
 ;;;You need ppcre installed
-;;;(ql:quickload "cl-ppcre")
+(ql:quickload "cl-ppcre")
 
 (load "mwlib.lisp")
 

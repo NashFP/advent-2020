@@ -1,3 +1,4 @@
+(ql:quickload :cl-ppcre)
 (load "mwlib.lisp")
 
 (defun parse-inst (line)

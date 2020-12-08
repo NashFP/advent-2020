@@ -1,3 +1,4 @@
+(ql:quicklisp :cl-ppcre)
 
 ;;; parse-contains1 takes a list of the strings after "contain" in a list, taking the count,
 ;;; and the two bag part names. If a bag contains no other bags, it must check for n
