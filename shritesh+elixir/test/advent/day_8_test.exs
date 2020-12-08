@@ -17,4 +17,8 @@ defmodule Advent.Day8Test do
   test "part_1" do
     assert Day8.part_1(@example) == 5
   end
+
+  test "part_2" do
+    assert Day8.part_2(@example) == 8
+  end
 end
