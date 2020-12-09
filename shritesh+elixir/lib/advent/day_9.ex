@@ -4,8 +4,8 @@ defmodule Advent.Day9 do
     |> Enum.map(&String.to_integer/1)
   end
 
-  defp valid_chunk?(input) do
-    [sum | numbers] = Enum.reverse(input)
+  defp valid_chunk?(chunk) do
+    [sum | numbers] = Enum.reverse(chunk)
 
     Stream.flat_map(numbers, fn x -> Stream.map(numbers, fn y -> {x, y} end) end)
     |> Stream.filter(fn {x, y} -> x != y end)

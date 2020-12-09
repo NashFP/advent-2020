@@ -1,12 +1,12 @@
 defmodule Advent.Day2 do
   @input_regex ~r/(?<min>\d+)-(?<max>\d+) (?<char>\S): (?<password>.+)/
-  def part_1(passwords) do
-    parse(passwords)
+  def part_1(input) do
+    parse(input)
     |> Enum.count(&validate_1?/1)
   end
 
-  def part_2(passwords) do
-    parse(passwords)
+  def part_2(input) do
+    parse(input)
     |> Enum.count(&validate_2?/1)
   end
 

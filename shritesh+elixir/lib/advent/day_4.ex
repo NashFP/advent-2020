@@ -1,23 +1,22 @@
 defmodule Advent.Day4 do
-  defp passport_fields(passport_lines) do
-    passport_lines
-    |> String.split(["\n", " "], trim: true)
+  defp passport_map(passport_text) do
+    String.split(passport_text, ["\n", " "], trim: true)
     |> Enum.into(%{}, &List.to_tuple(String.split(&1, ":")))
   end
 
-  defp valid_passport_1?(fields) do
+  defp valid_passport_1?(passport) do
     required_fields = ~w{byr iyr eyr hgt hcl ecl pid}
-    keys = Map.keys(fields)
+    keys = Map.keys(passport)
     Enum.all?(required_fields, &(&1 in keys))
   end
 
   def part_1(input) do
     String.split(input, "\n\n")
-    |> Enum.map(&passport_fields/1)
+    |> Enum.map(&passport_map/1)
     |> Enum.count(&valid_passport_1?/1)
   end
 
-  defp valid_passport_2?(fields) do
+  defp valid_passport_2?(passport) do
     validations = %{
       "byr" => &(Regex.match?(~r/^\d{4}$/, &1) and String.to_integer(&1) in 1920..2002),
       "iyr" => &(Regex.match?(~r/^\d{4}$/, &1) and String.to_integer(&1) in 2010..2020),
@@ -34,13 +33,13 @@ defmodule Advent.Day4 do
     }
 
     Enum.all?(validations, fn {field, validation} ->
-      Map.has_key?(fields, field) and validation.(fields[field])
+      Map.has_key?(passport, field) and validation.(passport[field])
     end)
   end
 
   def part_2(input) do
     String.split(input, "\n\n")
-    |> Enum.map(&passport_fields/1)
+    |> Enum.map(&passport_map/1)
     |> Enum.count(&valid_passport_2?/1)
   end
 end
