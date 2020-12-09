@@ -28,4 +28,8 @@ defmodule Advent.Day9Test do
   test "part_1" do
     assert Day9.part_1(@example, 5) == 127
   end
+
+  test "part_2" do
+    assert Day9.part_2(@example, 5) == 62
+  end
 end
