@@ -54,4 +54,9 @@ defmodule Advent.Day10Test do
     assert Day10.part_1(@example1) == 7 * 5
     assert Day10.part_1(@example2) == 22 * 10
   end
+
+  test "part_2" do
+    assert Day10.part_2(@example1) == 8
+    assert Day10.part_2(@example2) == 19208
+  end
 end
