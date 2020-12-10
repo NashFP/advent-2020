@@ -27,7 +27,7 @@ defmodule Advent.Day3 do
       at(tm, {rem(row, rows), rem(col, columns)})
     end
 
-    def count_trees_at_slope(%__MODULE__{} = tm, {right, down}) do
+    def count_trees_of_slope(%__MODULE__{} = tm, {right, down}) do
       rows = :lists.seq(0, tm.rows - 1, down)
       cols = Stream.iterate(0, &(&1 + right))
 
@@ -36,17 +36,16 @@ defmodule Advent.Day3 do
     end
   end
 
-  def part_1(map_input) do
-    map_input
-    |> TobogganMap.new()
-    |> TobogganMap.count_trees_at_slope({3, 1})
+  def part_1(input) do
+    TobogganMap.new(input)
+    |> TobogganMap.count_trees_of_slope({3, 1})
   end
 
-  def part_2(map_input, slopes \\ [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]) do
-    tm = TobogganMap.new(map_input)
+  def part_2(input, slopes \\ [{1, 1}, {3, 1}, {5, 1}, {7, 1}, {1, 2}]) do
+    tm = TobogganMap.new(input)
 
     slopes
-    |> Enum.map(&TobogganMap.count_trees_at_slope(tm, &1))
+    |> Enum.map(&TobogganMap.count_trees_of_slope(tm, &1))
     |> Enum.reduce(1, &*/2)
   end
 end
