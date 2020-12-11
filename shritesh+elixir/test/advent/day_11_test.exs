@@ -18,4 +18,8 @@ defmodule Advent.Day11Test do
   test "part_1" do
     assert Day11.part_1(@example) == 37
   end
+
+  test "part_2" do
+    assert Day11.part_2(@example) == 26
+  end
 end
