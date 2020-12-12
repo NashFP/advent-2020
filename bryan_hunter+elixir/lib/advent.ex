@@ -1,0 +1,2 @@
+defmodule Advent do
+end
