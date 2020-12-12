@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "gFuk0Jp///nXhVmUfRUo4fh8WCkl0NDTNam04qvk//iRWTjpjzsegJLQur6W66uowe02hWd+nEW8CQz1CxwXCA==",
+  "success": true,
+  "projectFilePath": "/home/alexstory/test/fsharp/aoc2020/day9/Encryptor/Encryptor.Console/Encryptor.Console.fsproj",
+  "expectedPackageFiles": [
+    "/home/alexstory/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "vVpMdSMFJJgqxY39CMUE0f7Xu/COFG7lGStGL26GavJjFTWpnBZ2DDTDrCwI4MLsNboSg4orIKAZ/6STqJXq1w==",
+  "success": true,
+  "projectFilePath": "/home/alexstory/test/fsharp/aoc2020/day2/Second/src/Second.Console/Second.Console.fsproj",
+  "expectedPackageFiles": [
+    "/home/alexstory/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

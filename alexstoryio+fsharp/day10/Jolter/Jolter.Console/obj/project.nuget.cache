@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "c2au7FLQIDev2sdMYsy+FNG4oEX0Ravl3/A3pEOreT/Fegs46w852HxSvwpwNH+u1mPLHFAxfdN25S6zXnxfAg==",
+  "success": true,
+  "projectFilePath": "/home/alexstory/test/fsharp/aoc2020/day10/Jolter/Jolter.Console/Jolter.Console.fsproj",
+  "expectedPackageFiles": [
+    "/home/alexstory/.nuget/packages/fsharp.core/5.0.0/fsharp.core.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
