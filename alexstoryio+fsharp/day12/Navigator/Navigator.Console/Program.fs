@@ -22,22 +22,15 @@ let turnRight = function
 type Turn = Left | Right
 
 let (|L|R|F|N|S|E|W|) (n: string) =
-    if n.Contains("L") then
-        L (extractDigit n "L")
-    elif n.Contains("R") then
-        R  (extractDigit n "R")
-    elif n.Contains("F") then
-        F (extractDigit n "F")
-    elif n.Contains("N") then
-        N (extractDigit n "N")
-    elif n.Contains("S") then
-        S (extractDigit n "S")
-    elif n.Contains("E") then
-        E (extractDigit n "E")
-    elif n.Contains("W") then
-        W (extractDigit n "W")
-    else
-        failwith "Invalid input"
+    match n.[0] with
+    | 'L' -> L (extractDigit n "L")
+    | 'R' -> R (extractDigit n "R")
+    | 'F' -> F (extractDigit n "F")
+    | 'N' -> N (extractDigit n "N")
+    | 'S' -> S (extractDigit n "S")
+    | 'E' -> E (extractDigit n "E")
+    | 'W' -> W (extractDigit n "W")
+    | _   -> failwith "invalid input"
 
 let rec getHeading (dir: Turn) n (heading: Heading) =
     match dir, n with
@@ -74,7 +67,6 @@ let rec rotate direction degree (wx, wy) =
     | Right, n -> rotate Right (n - 90) (wy, -wx)
 
 let rec parseDirections' directions (wx, wy) (sx, sy) =
-    printfn "ship: (%d, %d) waypoint: (%d, %d)" sx sy wx wy
     match directions with
     | [] -> sx, sy
     | head::tail ->
