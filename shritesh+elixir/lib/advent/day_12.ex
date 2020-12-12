@@ -1,33 +1,58 @@
 defmodule Advent.Day12 do
   defmodule Ship do
-    defstruct [:x, :y, :rotation]
+    defstruct [:location, :rotation]
 
     def new do
-      %__MODULE__{x: 0, y: 0, rotation: {1, 0}}
+      %__MODULE__{location: {0, 0}, rotation: {1, 0}}
     end
 
-    def action(%__MODULE__{x: x, y: y} = ship, {:move, {dx, dy}}) do
-      %{ship | x: x + dx, y: y + dy}
+    def action(%__MODULE__{location: {x, y}} = ship, {:move, {dx, dy}}) do
+      %{ship | location: {x + dx, y + dy}}
     end
 
-    def action(%__MODULE__{rotation: {rx, ry}} = ship, {:rotate, angle}) do
-      rotation =
-        case angle do
-          90 -> {-ry, rx}
-          180 -> {-rx, -ry}
-          270 -> {ry, -rx}
-        end
-
-      %{ship | rotation: rotation}
+    def action(%__MODULE__{rotation: rotation} = ship, {:rotate, angle}) do
+      %{ship | rotation: Advent.Day12.rotate(rotation, angle)}
     end
 
     def action(%__MODULE__{rotation: {rx, ry}} = ship, {:forward, units}) do
       action(ship, {:move, {rx * units, ry * units}})
     end
+  end
 
-    def manhattan_distance(%__MODULE__{x: x, y: y}) do
-      abs(x) + abs(y)
+  defmodule WaypointShip do
+    defstruct [:location, :waypoint]
+
+    def new do
+      %__MODULE__{location: {0, 0}, waypoint: {10, 1}}
     end
+
+    def action(%__MODULE__{waypoint: {x, y}} = ship, {:move, {dx, dy}}) do
+      %{ship | waypoint: {x + dx, y + dy}}
+    end
+
+    def action(%__MODULE__{waypoint: waypoint} = ship, {:rotate, angle}) do
+      %{ship | waypoint: Advent.Day12.rotate(waypoint, angle)}
+    end
+
+    def action(
+          %__MODULE__{location: {x, y}, waypoint: {wx, wy}} = ship,
+          {:forward, times}
+        ) do
+      {dx, dy} = {wx * times, wy * times}
+      %{ship | location: {x + dx, y + dy}}
+    end
+  end
+
+  def rotate({rx, ry}, angle) do
+    case angle do
+      90 -> {-ry, rx}
+      180 -> {-rx, -ry}
+      270 -> {ry, -rx}
+    end
+  end
+
+  def manhattan_distance(%{location: {x, y}}) do
+    abs(x) + abs(y)
   end
 
   defp input_to_directions(input) do
@@ -50,6 +75,12 @@ defmodule Advent.Day12 do
   def part_1(input) do
     input_to_directions(input)
     |> Enum.reduce(Ship.new(), &Ship.action(&2, &1))
-    |> Ship.manhattan_distance()
+    |> manhattan_distance()
+  end
+
+  def part_2(input) do
+    input_to_directions(input)
+    |> Enum.reduce(WaypointShip.new(), &WaypointShip.action(&2, &1))
+    |> manhattan_distance()
   end
 end
