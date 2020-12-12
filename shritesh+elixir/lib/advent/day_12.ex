@@ -1,20 +1,20 @@
 defmodule Advent.Day12 do
   defmodule Ship do
-    defstruct [:location, :rotation]
+    defstruct [:location, :direction]
 
     def new do
-      %__MODULE__{location: {0, 0}, rotation: {1, 0}}
+      %__MODULE__{location: {0, 0}, direction: {1, 0}}
     end
 
     def action(%__MODULE__{location: {x, y}} = ship, {:move, {dx, dy}}) do
       %{ship | location: {x + dx, y + dy}}
     end
 
-    def action(%__MODULE__{rotation: rotation} = ship, {:rotate, angle}) do
-      %{ship | rotation: Advent.Day12.rotate(rotation, angle)}
+    def action(%__MODULE__{direction: direction} = ship, {:rotate, angle}) do
+      %{ship | direction: Advent.Day12.rotate(direction, angle)}
     end
 
-    def action(%__MODULE__{rotation: {rx, ry}} = ship, {:forward, units}) do
+    def action(%__MODULE__{direction: {rx, ry}} = ship, {:forward, units}) do
       action(ship, {:move, {rx * units, ry * units}})
     end
   end
