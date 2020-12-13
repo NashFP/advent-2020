@@ -28,22 +28,30 @@ defmodule Advent.Day13 do
     end)
   end
 
-  defp find_earliest_timestamp([{start, 0} | rest]) do
-    Stream.iterate(1, &(&1 + 1))
-    |> Enum.find_value(fn multiplier ->
-      guess = multiplier * start
+  defp chinese_remainder(pairs) do
+    # Based on https://www.youtube.com/watch?v=zIFehsBHB8o
+    big_n = Enum.reduce(pairs, 1, fn {ni, _bi}, acc -> acc * ni end)
 
-      if Enum.all?(rest, fn {n, offset} -> rem(guess + offset, n) == 0 end) do
-        guess
-      end
-    end)
+    for {ni, bi} <- pairs do
+      big_ni = div(big_n, ni)
+
+      m = rem(big_ni, ni)
+      xi = Enum.find(1..ni, &(rem(m * &1, ni) == 1))
+      bi * big_ni * xi
+    end
+    |> Enum.sum()
+    |> rem(big_n)
   end
 
   def part_2(input) do
     String.split(input, ",")
     |> Enum.with_index()
     |> Enum.filter(fn {n, _idx} -> n != "x" end)
-    |> Enum.map(fn {n, idx} -> {String.to_integer(n), idx} end)
-    |> find_earliest_timestamp()
+    |> Enum.map(fn {n, idx} ->
+      n = String.to_integer(n)
+      i = if idx == 0, do: 0, else: n - idx
+      {n, i}
+    end)
+    |> chinese_remainder()
   end
 end
