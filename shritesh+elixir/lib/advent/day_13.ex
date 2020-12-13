@@ -49,8 +49,7 @@ defmodule Advent.Day13 do
     |> Enum.filter(fn {n, _idx} -> n != "x" end)
     |> Enum.map(fn {n, idx} ->
       n = String.to_integer(n)
-      i = if idx == 0, do: 0, else: n - idx
-      {n, i}
+      {n, n - idx}
     end)
     |> chinese_remainder()
   end
