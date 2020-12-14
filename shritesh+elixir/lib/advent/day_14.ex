@@ -18,7 +18,7 @@ defmodule Advent.Day14 do
   end
 
   defp run(input, fun) do
-    Enum.reduce(input_to_assignments(input), {%{}, {0, 0}}, fun)
+    Enum.reduce(input_to_assignments(input), {%{}, nil}, fun)
     |> elem(0)
     |> Enum.map(&elem(&1, 1))
     |> Enum.sum()
