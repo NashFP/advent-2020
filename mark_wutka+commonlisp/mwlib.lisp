@@ -21,3 +21,11 @@
 (defun drop (n list)
   (if (= n 0) list
       (drop (1- n) (cdr list))))
+
+(defun tr-sub (ch char-map)
+  (let ((match (assoc ch char-map)))
+    (if match (cadr match) ch)))
+
+(defun tr (source char-map)
+  (map 'string
+       (lambda (ch) (tr-sub ch char-map)) source))
