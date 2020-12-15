@@ -28,4 +28,9 @@ defmodule Advent.Day15 do
     number_stream(numbers)
     |> Enum.at(2020 - 1)
   end
+
+  def part_2(numbers) do
+    number_stream(numbers)
+    |> Enum.at(30_000_000 - 1)
+  end
 end
