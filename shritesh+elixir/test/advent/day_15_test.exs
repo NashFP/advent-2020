@@ -17,6 +17,7 @@ defmodule Advent.Day15Test do
     end)
   end
 
+  @tag :skip
   test "part_2" do
     [
       {[0, 3, 6], 175_594},
