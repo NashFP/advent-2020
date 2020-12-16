@@ -4,7 +4,7 @@ open FSharp.Collections
 open System.Collections.Generic
 
 let content = 
-        let mutable dict = new Dictionary<int, int> ()
+        let dict = new Dictionary<int, int> ()
         let contents = 
             __SOURCE_DIRECTORY__ + "/input.txt"
             |> File.ReadAllText
