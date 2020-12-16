@@ -5,8 +5,8 @@
        collect line)))
 
 (defun split-groups (lines groups group)
-  (cond ((null lines) (if (null group) groups (cons group groups)))
-	((= (length (car lines)) 0) (split-groups (cdr lines) (cons group groups) '()))
+  (cond ((null lines) (reverse (if (null group) groups (cons (reverse group) groups))))
+	((= (length (car lines)) 0) (split-groups (cdr lines) (cons (reverse group) groups) '()))
 	(t (split-groups (cdr lines) groups (cons (car lines) group)))))
 
 (defun take (n list)
@@ -29,3 +29,6 @@
 (defun tr (source char-map)
   (map 'string
        (lambda (ch) (tr-sub ch char-map)) source))
+
+(defun iota (n)
+  (loop for i from 0 below n collect i))
