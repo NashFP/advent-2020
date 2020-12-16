@@ -8,7 +8,8 @@ type MemoryRegex = Regex< @"(?<=mem\[)(?<Index>\d+)\]\s=\s(?<Val>\d+)" >
 
 let update idx v list = Array.mapi (fun i x -> if i = idx then v else x) list
 let updateString idx v str = 
-    str |> String.toArray
+    str 
+    |> String.toArray
     |> update idx v
     |> String.ofArray
 
@@ -98,6 +99,7 @@ let part1 () =
 let part2() =
     let commands = content()
     let memory = [||]
+
     runDecoder commands memory ""
     |> map snd 
     |> sum
