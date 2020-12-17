@@ -37,3 +37,10 @@
   (labels ((rec (x n acc)
 	     (if (= n 0) acc (rec x (1- n) (cons x acc)))))
     (rec x n '())))
+
+(defun cartesian-product (&rest lists)
+  (labels ((prod (a b)
+	     (mapcan (lambda (bx) (mapcar (lambda (ax)
+					    (if (listp bx) (cons ax bx)
+						(list ax bx))) a)) b)))
+    (reduce #'prod lists :from-end t)))
