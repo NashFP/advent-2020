@@ -1,17 +1,5 @@
 (load "mwlib.lisp")
 
-(defvar neighbors-a '(#(-1 -1 -1) #(-1 -1 0) #(-1 -1 1)
-		    #(-1 0 -1)  #(-1 0 0)  #(-1 0 1)
-		    #(-1 1 -1)  #(-1 1 0)  #(-1 1 1)
-
-		    #(0 -1 -1)  #(0 -1 0)  #(0 -1 1)
-		    #(0 0  -1)             #(0 0 1)
-		    #(0 1 -1)   #(0 1 0)   #(0 1 1)
-
-		    #(1 -1 -1)  #(1 -1 0)  #(1 -1 1)
-		    #(1 0  -1)  #(1 0  0)  #(1 0  1)
-		      #(1 1  -1)  #(1 1 0)   #(1 1 1)))
-
 (defun add-offset (v off)
   (map 'vector #'+ v off))
 
@@ -19,8 +7,10 @@
   (let ((space-map (make-hash-table :test #'equalp)))
     (loop for line in lines
        for y from 0
-       do (map 'list (lambda (ch x) (setf (gethash (apply #' vector x y (repeat 0 (- dimensions 2))) space-map)
-					  ch)) line (iota (length line))))
+       do (map 'list
+	       (lambda (ch x)
+		 (setf (gethash (apply #' vector x y (repeat 0 (- dimensions 2))) space-map) ch))
+	       line (iota (length line))))
     space-map))
 
 (defun count-adjacent-active (v space-map neighbors)
@@ -59,21 +49,15 @@
   (mapcan (lambda (bx) (mapcar (lambda (ax)
 				 (if (listp bx) (cons ax bx)
 				     (list ax bx))) a)) b))
-
-(defun compute-neighbors-b ()
-  (let ((offs '(-1 0 1)))    
-    (mapcar (lambda (o) (apply #'vector o))
-	    (remove-if (lambda (l)
-			 (and (= 0 (first l))
-			      (= 0 (second l))
-			      (= 0 (third l))
-			      (= 0 (fourth l))))
-		       (prod offs (prod offs (prod offs offs)))))))
+(defun compute-neighbors (n)
+  (mapcar (lambda (o) (apply #'vector o))
+	  (remove (repeat 0 n)
+		  (reduce #'prod (repeat '(-1 0 1) n) :from-end t) :test #'equalp)))
 
 (defun day17a ()
   (let ((space-map (initialize-space (read-file "day17.txt") 3)))
-    (count-all-active (do-rounds 6 space-map neighbors-a))))
+    (count-all-active (do-rounds 6 space-map (compute-neighbors 3)))))
 
 (defun day17b ()
   (let ((space-map (initialize-space (read-file "day17.txt") 4)))
-    (count-all-active (do-rounds 6 space-map (compute-neighbors-b)))))
+    (count-all-active (do-rounds 6 space-map (compute-neighbors 4)))))
