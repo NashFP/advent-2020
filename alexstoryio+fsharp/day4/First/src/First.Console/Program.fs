@@ -1,5 +1,6 @@
 open System.IO
-open Microsoft.FSharp.Linq.NullableOperators
+
+let nl = System.Environment.NewLine
 
 type Passport = {
     RawString: string
@@ -159,6 +160,7 @@ module Passport =
 let content = 
     __SOURCE_DIRECTORY__ + "/input.txt"
     |> File.ReadAllText
+    |> fun x -> x.Replace(nl, "\n")
     |> fun x -> x.Split("\n\n")
     |> Array.map(fun x -> Passport.create (x.Replace("\n", " ")))
     |> Array.filter Passport.isValid
