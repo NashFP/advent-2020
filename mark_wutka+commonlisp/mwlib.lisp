@@ -32,3 +32,8 @@
 
 (defun iota (n)
   (loop for i from 0 below n collect i))
+
+(defun repeat (x n)
+  (labels ((rec (x n acc)
+	     (if (= n 0) acc (rec x (1- n) (cons x acc)))))
+    (rec x n '())))
