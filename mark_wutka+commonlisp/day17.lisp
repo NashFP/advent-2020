@@ -29,11 +29,10 @@
 
 (defun do-round (space-map neighbors)
   (let ((new-map (make-hash-table :test #'equalp)))
-    (loop for v being the hash-keys of space-map
-       do (update-cell v space-map new-map neighbors)
-	 (mapcar (lambda (off)
-		   (update-cell (add-offset v off) space-map new-map neighbors))
-		 neighbors))
+    (maphash (lambda (k -)
+	       (update-cell k space-map new-map neighbors)
+	       (dolist (off neighbors)
+		 (update-cell (add-offset k off) space-map new-map neighbors))) space-map)
     new-map))
 
 (defun do-rounds (n space-map neighbors)
