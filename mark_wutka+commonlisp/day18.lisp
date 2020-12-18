@@ -1,6 +1,7 @@
 (load "mwlib.lisp")
 
 (defun do-op (expr)
+  ;;; destructuring-bind is for simple pattern-matching
   (destructuring-bind (a op b) expr
     (case op
       (#\+ (+ a b))
@@ -11,9 +12,12 @@
 
 (defun eval-expr (expr reduce-func)
   (labels
+      ;;; labels is like let, but for functions, this is a common pattern in making
+      ;;; a nested tail recursive function
       ((eval-rec (pos stack )
 	 (if (>= pos (length expr))
 	     ;;; If we are at the end of the string, reduce the stack and return value and last pos
+	     ;;; We reverse the stack because we reduce from left to right
 	     (values (car (funcall reduce-func (reverse stack))) pos)
 
 	     ;;; Otherwise, look at the next char
@@ -28,7 +32,10 @@
 		 ;;; and continue evaluating from the next position
 		 ((eq ch #\()
 		  (multiple-value-bind (new-pos new-stack)
+		      ;;; Evaluate the sub expr with a new stack
 		      (eval-rec (1+ pos) '())
+		    ;;; Continue processing starting at new-pos, pushing the reduced
+		    ;;; sub-expression onto the front of the stack
 		    (eval-rec new-pos
 			      (cons (car (funcall reduce-func (reverse new-stack)))
 				    stack))))
