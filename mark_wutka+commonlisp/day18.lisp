@@ -11,9 +11,9 @@
   (- (char-int ch) (char-int #\0)))
 
 (defun eval-expr (expr reduce-func)
+  ;;; labels is like let, but for functions, this is a common pattern in making
+  ;;; a nested tail recursive function
   (labels
-      ;;; labels is like let, but for functions, this is a common pattern in making
-      ;;; a nested tail recursive function
       ((eval-rec (pos stack )
 	 (if (>= pos (length expr))
 	     ;;; If we are at the end of the string, reduce the stack and return value and last pos
@@ -50,6 +50,7 @@
 		 (t (format t "Unknown char ~A~%" ch)
 		    (eval-rec (1+ pos) stack))))))
        )
+    ;;; call tail-recursive version with 0 for the starting position and an empty stack
     (eval-rec 0 '())))
 
 
@@ -58,10 +59,20 @@
 (defun reduce-ops (stack ops)
   (let ((parts (take 3 stack)))
     (if (< (length parts) 3) stack
+	;;; Is the operator part of the expression in the ops we are processing?
 	(if (member (second parts) ops)
+	    ;;; Invoke do-op on these 3 items in the stack, push that on the front
+	    ;;; and reduce again
 	    (reduce-ops (cons (do-op parts)
 			      (drop 3 stack))
 			ops)
+	    ;;; Otherwise, hang onto the first 2 parts (1st arg and operator)
+	    ;;; and reduce the rest, then put it back together
+	    ;;; So that if + isn't in ops, 1 + 2 * 3 + 4 would hold onto (1 +), evaluate
+	    ;;; 2 * 3 + 4, which would eventually return 6 + 4, and the final
+	    ;;; reduced expr would be 1 + 6 + 4
+	    ;;; (reduce-ops '(1 #\+ 2 #\* 3 #\+ 4) '(#\*))
+	    ;;; returns (1 #\+ 6 #\+ 4)
 	    (append (take 2 stack) (reduce-ops (drop 2 stack) ops))))))
 
 ;;; For the first round, reduce all the operators at the same time
