@@ -10,7 +10,7 @@
 	(t (split-groups (cdr lines) groups (cons (car lines) group)))))
 
 (defun take (n list)
-  (if (= n 0) '()
+  (if (or (= n 0) (null list)) '()
       (cons (car list) (take (1- n) (cdr list)))))
 
 (defun take-while (f l)
@@ -19,7 +19,7 @@
 	  (take-while f (cdr l)))))
 
 (defun drop (n list)
-  (if (= n 0) list
+  (if (or (= n 0) (null list)) list
       (drop (1- n) (cdr list))))
 
 (defun tr-sub (ch char-map)
