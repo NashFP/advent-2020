@@ -31,8 +31,9 @@
 		 ;;; after the sub-expression, so push that new value on the stack
 		 ;;; and continue evaluating from the next position
 		 ((eq ch #\()
-		  (multiple-value-bind (new-pos new-stack)
-		      ;;; Evaluate the sub expr with a new stack
+		  (multiple-value-bind (new-stack new-pos)
+		      ;;; Evaluate the sub expr with a new stack (the values returned
+		      ;;; are bound to the new-stack and new-pos variables defined above)
 		      (eval-rec (1+ pos) '())
 		    ;;; Continue processing starting at new-pos, pushing the reduced
 		    ;;; sub-expression onto the front of the stack
@@ -40,7 +41,7 @@
 			      (cons (car (funcall reduce-func (reverse new-stack)))
 				    stack))))
 		 ;;; If the next is a ), return the next position and the current stack
-		 ((eq ch #\)) (values (1+ pos) stack))
+		 ((eq ch #\)) (values stack (1+ pos)))
 
 		 ;;; If the char is an operator, push it on the stack and keep going
 		 ((or (eq ch #\*) (eq ch #\+)) (eval-rec (1+ pos) (cons ch stack)))
