@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LeftLang.Tokenizer\LeftLang.Tokenizer.fsproj">
+      <Name>LeftLang.Tokenizer.fsproj</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LeftLang.Core\LeftLang.Core.fsproj">
+      <Name>LeftLang.Core.fsproj</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+</Project>
