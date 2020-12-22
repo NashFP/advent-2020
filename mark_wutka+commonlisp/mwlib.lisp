@@ -30,8 +30,8 @@
   (map 'string
        (lambda (ch) (tr-sub ch char-map)) source))
 
-(defun iota (n)
-  (loop for i from 0 below n collect i))
+(defun iota (n &key (start 0))
+  (loop for i from start below (+ n start) collect i))
 
 (defun repeat (x n)
   (labels ((rec (x n acc)
@@ -42,5 +42,8 @@
   (labels ((prod (a b)
 	     (mapcan (lambda (bx) (mapcar (lambda (ax)
 					    (if (listp bx) (cons ax bx)
-						(list ax bx))) a)) b)))
+						(list ax bx)))
+					  a))
+		     b)))
     (reduce #'prod lists :from-end t)))
+
