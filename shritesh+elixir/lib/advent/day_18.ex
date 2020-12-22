@@ -13,54 +13,24 @@ defmodule Advent.Day18 do
     end)
   end
 
-  defp eval(tokens) do
-    eval(tokens, nil, nil, [])
+  defp parse([:open | rest], acc) do
+    {parens, rest} = parse(rest, [])
+    parse(rest, [parens | acc])
   end
 
-  # tokens, op, acc, stack
-  defp eval([], nil, acc, []) do
-    acc
-  end
+  defp parse([:close | rest], acc), do: {Enum.reverse(acc), rest}
+  defp parse([n | rest], acc), do: parse(rest, [n | acc])
+  defp parse([], acc), do: Enum.reverse(acc)
 
-  defp eval([:open | rest], op, acc, stack) do
-    eval(rest, nil, nil, [{op, acc} | stack])
-  end
-
-  defp eval([:close | rest], nil, acc, [{nil, nil} | stack]) do
-    eval(rest, nil, acc, stack)
-  end
-
-  defp eval([:close | rest], nil, acc, [{:add, old_acc} | stack]) do
-    eval(rest, nil, old_acc + acc, stack)
-  end
-
-  defp eval([:close | rest], nil, acc, [{:mul, old_acc} | stack]) do
-    eval(rest, nil, old_acc * acc, stack)
-  end
-
-  defp eval([:add | rest], nil, acc, stack) do
-    eval(rest, :add, acc, stack)
-  end
-
-  defp eval([:mul | rest], nil, acc, stack) do
-    eval(rest, :mul, acc, stack)
-  end
-
-  defp eval([n | rest], :add, acc, stack) do
-    eval(rest, nil, acc + n, stack)
-  end
-
-  defp eval([n | rest], :mul, acc, stack) do
-    eval(rest, nil, acc * n, stack)
-  end
-
-  defp eval([n | rest], nil, nil, stack) do
-    eval(rest, nil, n, stack)
-  end
+  defp eval([n]), do: n
+  defp eval([a, :add, b | rest]), do: eval([eval(a) + eval(b) | rest])
+  defp eval([a, :mul, b | rest]), do: eval([eval(a) * eval(b) | rest])
+  defp eval(n), do: n
 
   def exec(input) do
     input
     |> tokenize()
+    |> parse([])
     |> eval()
   end
 
