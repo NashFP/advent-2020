@@ -22,21 +22,35 @@ defmodule Advent.Day18 do
   defp parse([n | rest], acc), do: parse(rest, [n | acc])
   defp parse([], acc), do: Enum.reverse(acc)
 
-  defp eval([n]), do: n
-  defp eval([a, :add, b | rest]), do: eval([eval(a) + eval(b) | rest])
-  defp eval([a, :mul, b | rest]), do: eval([eval(a) * eval(b) | rest])
-  defp eval(n), do: n
+  defmodule Day1 do
+    def eval([n]), do: n
+    def eval([a, :add, b | rest]), do: eval([eval(a) + eval(b) | rest])
+    def eval([a, :mul, b | rest]), do: eval([eval(a) * eval(b) | rest])
+    def eval(n), do: n
+  end
 
-  def exec(input) do
-    input
-    |> tokenize()
-    |> parse([])
-    |> eval()
+  defmodule Day2 do
+    def eval([n]), do: n
+    def eval([a, :add, b | rest]), do: eval([eval(a) + eval(b) | rest])
+    def eval([a, :mul, b | rest]), do: eval(a) * eval([eval(b) | rest])
+    def eval(n), do: n
+  end
+
+  defp run(lines, day) do
+    for input <- String.split(lines, "\n", trim: true) do
+      input
+      |> tokenize()
+      |> parse([])
+      |> day.eval()
+    end
+    |> Enum.sum()
   end
 
   def part_1(lines) do
-    String.split(lines, "\n", trim: true)
-    |> Enum.map(&exec/1)
-    |> Enum.sum()
+    run(lines, Day1)
+  end
+
+  def part_2(lines) do
+    run(lines, Day2)
   end
 end
