@@ -1,25 +1,38 @@
 (ql:quickload :cl-ppcre)
 (load "mwlib.lisp")
 
+;;; I have been leaving things as strings in my AoC Common Lisp programs
+;;; but this means that I have to remember to change the comparison test
+;;; when I use any of the set operations, assoc, or member. In this version
+;;; of the day 21 code, I use the intern function to convert all the ingredient
+;;; and allergens to symbols, so that I can remove all the :test options and
+;;; use the default equality test. Other than removing the :test options, the
+;;; only other change is in parse-line where I map the intern func over the
+;;; list of strings returned.
+;;; The final sorted-assignments list now looks like this, where the |something| is
+;;; a symbol instead of being the string "something":
+;;; ((|dairy| |fqhpsl|) (|eggs| |zxncg|) (|fish| |clzpsl|) (|nuts| |zbbnj|)
+;;; (|peanuts| |jkgbvlxh|) (|sesame| |dzqc|) (|soy| |ppj|) (|wheat| |glzb|))
+
 ;;; Separate the ingredients from the allergins, split ingredients on space
 ;;; and allergens on comma-space
 (defun parse-line (line)
   (ppcre:register-groups-bind (ingredients allergens)
       ("(.*) \\(contains ([^)]*)\\)" line)
-    (list (ppcre:split " +" ingredients)
-	  (ppcre:split ", +" allergens))))
+    (list (mapcar #'intern (ppcre:split " +" ingredients))
+	  (mapcar #'intern (ppcre:split ", +" allergens)))))
 
 ;;; Get a list of all the possible allergens
 (defun get-all-allergens (ingredient-lists)
-  (reduce (lambda (a b) (union a b :test #'equal)) (mapcar #'cadr ingredient-lists)))
+  (reduce (lambda (a b) (union a b)) (mapcar #'cadr ingredient-lists)))
 
 ;;; Get all the ingredients that occur in each of the ingredient lists
 (defun get-possible-ingredients (ingredient-lists)
-  (reduce (lambda (a b) (intersection a b :test #'equal)) (mapcar #'car ingredient-lists)))
+  (reduce (lambda (a b) (intersection a b)) (mapcar #'car ingredient-lists)))
 
 ;;; Returns true if an ingredient list contains an allergen
 (defun has-allergen (allergen ingredient-list)
-  (member allergen (cadr ingredient-list) :test #'equal))
+  (member allergen (cadr ingredient-list)))
 
 ;;; Get all the ingredients that occur every time a certain allergen is listed
 (defun get-possible-ingredients-with-allergen (allergen ingredient-lists)
@@ -46,7 +59,7 @@
 		       ;;; Otherwise, try the rest of the assignments, removing this ingredient
 		       ;;; from the possible ingredients for the rest of the assignments
 		       (let ((result (try-allergen
-				      (mapcar (lambda (il) (remove (car ing) il :test #'equal))
+				      (mapcar (lambda (il) (remove (car ing) il))
 					      (cdr ingredients-per-allergen)))))
 			 ;;; If the result is non-null, the rest of the assignments succeeded,
 			 ;;; Put this allergen-ingredient list on the front of the result and
@@ -75,7 +88,7 @@
     ;;; Remove the assigned ingredients from the ingredients in each ingredient list
     ;;; and count not many remain
     (apply #'+ (mapcar (lambda (il)
-			 (length (set-difference (car il) allergen-ingredients :test #'equal)))
+			 (length (set-difference (car il) allergen-ingredients)))
 		       ingredient-lists))
 
     ))
