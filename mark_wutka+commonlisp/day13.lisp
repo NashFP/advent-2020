@@ -29,9 +29,11 @@
        collect (cons i (parse-integer b))
 	)))
 
-;;; Find the time (offset) at which time the bus that repeats every
-;;; target-mod minutes is at the position (target-offset) relative
-;;; to the offset.
+;;; Find the time (offset) at which time the bus that departs every
+;;; target-mod minutes is departing the position (target-offset) relative
+;;; to the offset (it departs at time t if t mod target-mod = 0
+;;; We add period each time because that's the amount of time for the
+;;; previously-processed buses to be back in the right position again
 (defun find-offset (offset period target-mod target-offset)
   (if (= 0 (mod (+ offset target-offset) target-mod) )      
       offset
