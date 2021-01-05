@@ -29,11 +29,20 @@
        collect (cons i (parse-integer b))
 	)))
 
+;;; Find the time (offset) at which time the bus that repeats every
+;;; target-mod minutes is at the position (target-offset) relative
+;;; to the offset.
 (defun find-offset (offset period target-mod target-offset)
   (if (= 0 (mod (+ offset target-offset) target-mod) )      
       offset
       (find-offset (+ offset period) period target-mod target-offset)))
 
+;;; Offset is the time offset at which all the targets so far will reach
+;;; their desired positions, and period is the amount of time it will
+;;; take to repeat that pattern. We now calculate the offset needed for the
+;;; next bus to be in the proper position (new-offset). The period is then
+;;; multiplied by the target mod, which is the length of time it takes that
+;;; bus cycle to repeat.
 (defun find-offsets (offset period targets)
   (if (null targets) offset
       (let* ((target-offset (caar targets))
@@ -44,4 +53,6 @@
 (defun day13b ()
   (let* ((lines (read-file "day13.txt"))
 	 (targets (get-buses-and-offsets (cadr lines))))
+    ;;; The initial offset is just the offset for the first bus, and
+    ;;; the initial period is the time for the first bus to repeat
     (find-offsets (caar targets) (cdar targets) (cdr targets))))
